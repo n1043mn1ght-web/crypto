@@ -3,33 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartCalc — Professional Crypto Calculator</title>
+    <title>SmartCalc — Professional Crypto Analytics & Calculator</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
-        :root { --brand: #4f46e5; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --muted: #64748b; }
+        :root { --brand: #2962ff; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-        header { background: #fff; padding: 15px 5%; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 800; color: var(--brand); text-decoration: none; font-size: 1.2rem; }
-        .nav a { margin-left: 15px; text-decoration: none; color: var(--muted); font-size: 0.9rem; font-weight: 600; }
-        .container { max-width: 480px; margin: 60px auto; padding: 20px; }
-        .card { background: #fff; padding: 35px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        h1 { text-align: center; margin-bottom: 25px; font-size: 1.6rem; letter-spacing: -0.03em; }
-        .box { background: #f1f5f9; padding: 15px; border-radius: 12px; margin-bottom: 10px; }
-        label { display: block; font-size: 0.7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; }
-        .row { display: flex; align-items: center; gap: 10px; }
-        input { flex: 1; background: none; border: none; font-size: 1.4rem; font-weight: 700; outline: none; width: 60%; }
-        select { background: #fff; border: 1px solid #cbd5e1; padding: 5px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-        .swap { display: flex; justify-content: center; margin: -20px 0; position: relative; z-index: 2; }
-        .btn { background: var(--brand); color: #fff; border: 4px solid #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .btn:hover { transform: rotate(180deg); }
-        .result { margin-top: 30px; text-align: center; padding-top: 20px; border-top: 1px solid #f1f5f9; }
-        .val { font-size: 2.2rem; font-weight: 800; color: var(--brand); margin-bottom: 5px; }
-        .info { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
-        .live { color: #10b981; font-size: 0.65rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 10px; }
-        .dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; animation: p 1.5s infinite; }
-        @keyframes p { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        footer { text-align: center; padding: 30px; font-size: 0.8rem; color: var(--muted); }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+        
+        header { 
+            background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px);
+            padding: 15px 5%; border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .logo { font-weight: 900; color: var(--brand); text-decoration: none; font-size: 1.5rem; letter-spacing: -1px; }
+        .nav a { margin-left: 20px; text-decoration: none; color: #94a3b8; font-weight: 600; font-size: 0.85rem; transition: 0.3s; }
+        .nav a:hover { color: #fff; }
+
+        .hero { text-align: center; padding: 60px 20px 40px; }
+        h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 10px; background: linear-gradient(to right, #60a5fa, #2962ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { color: #94a3b8; font-size: 1.1rem; }
+
+        .main-grid { 
+            max-width: 1200px; margin: 0 auto 60px; padding: 0 20px;
+            display: grid; grid-template-columns: 1fr 350px; gap: 30px;
+        }
+
+        .widget-container { 
+            background: var(--card); border-radius: 24px; padding: 20px; 
+            border: 1px solid rgba(255,255,255,0.1); min-height: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        .calc-sidebar {
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .side-card {
+            background: var(--card); border-radius: 20px; padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .side-card h3 { font-size: 0.9rem; text-transform: uppercase; color: #64748b; margin-bottom: 15px; letter-spacing: 1px; }
+
+        /* Стили для кастомного мини-калькулятора (Fallback) */
+        .simple-calc input {
+            width: 100%; background: #0f172a; border: 1px solid #334155;
+            padding: 12px; border-radius: 10px; color: #fff; font-weight: 700; font-size: 1.2rem; margin-bottom: 15px; outline: none;
+        }
+        .simple-calc select {
+            width: 100%; background: #334155; border: none; padding: 10px; border-radius: 8px; color: #fff; font-weight: 600; cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2.2rem; }
+        }
+
+        footer { text-align: center; padding: 60px; color: #475569; border-top: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
@@ -37,103 +68,90 @@
 <header>
     <a href="#" class="logo">SmartCalc</a>
     <div class="nav">
-        <a href="https://n1043mn1ght-web.github.io">Home</a>
+        <a href="https://n1043mn1ght-web.github.io">Tools</a>
         <a href="https://n1043mn1ght-web.github.io">Mortgage</a>
+        <a href="https://n1043mn1ght-web.github.io">Invest</a>
     </div>
 </header>
 
-<div class="container">
-    <div class="card">
-        <h1>Crypto Calculator</h1>
-        <div class="box">
-            <label>Amount</label>
-            <div class="row">
-                <input type="number" id="amt" value="1">
-                <select id="from">
-                    <option value="bitcoin">BTC</option>
-                    <option value="ethereum">ETH</option>
-                    <option value="solana">SOL</option>
-                    <option value="tether">USDT</option>
-                    <option value="usd">USD</option>
-                </select>
+<section class="hero">
+    <h1>Crypto Analytics</h1>
+    <p>Professional grade real-time market evaluation</p>
+</section>
+
+<div class="main-grid">
+    <!-- ГРАФИК И ЦЕНЫ (TradingView) -->
+    <div class="widget-container">
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container" style="height:100%;width:100%">
+            <div id="tradingview_chart" style="height:calc(100% - 32px);width:100%"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com"></script>
+            <script type="text/javascript">
+            new TradingView.widget({
+              "autosize": true,
+              "symbol": "BINANCE:BTCUSDT",
+              "interval": "D",
+              "timezone": "Etc/UTC",
+              "theme": "dark",
+              "style": "1",
+              "locale": "en",
+              "toolbar_bg": "#f1f3f6",
+              "enable_publishing": false,
+              "hide_side_toolbar": false,
+              "allow_symbol_change": true,
+              "container_id": "tradingview_chart"
+            });
+            </script>
+        </div>
+        <!-- TradingView Widget END -->
+    </div>
+
+    <!-- БОКОВАЯ ПАНЕЛЬ С КАЛЬКУЛЯТОРОМ -->
+    <div class="calc-sidebar">
+        <div class="side-card">
+            <h3>Quick Conversion</h3>
+            <!-- TradingView Calculator Widget -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com" async>
+                {
+                  "width": "100%",
+                  "height": 400,
+                  "defaultColumn": "overview",
+                  "screener_type": "crypto_mkt",
+                  "displayCurrency": "USD",
+                  "colorTheme": "dark",
+                  "locale": "en"
+                }
+                </script>
             </div>
         </div>
-        <div class="swap"><button class="btn" id="swp">⇅</button></div>
-        <div class="box">
-            <label>To</label>
-            <div class="row">
-                <input type="text" value="Result" readonly style="font-size: 0.9rem; color: #94a3b8;">
-                <select id="to">
-                    <option value="usd">USD</option>
-                    <option value="bitcoin">BTC</option>
-                    <option value="ethereum">ETH</option>
-                    <option value="tether">USDT</option>
-                </select>
+
+        <div class="side-card">
+            <h3>Market Sentiment</h3>
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com" async>
+                {
+                  "interval": "1m",
+                  "width": "100%",
+                  "isTransparent": true,
+                  "height": 350,
+                  "symbol": "BINANCE:BTCUSDT",
+                  "showIntervalTabs": true,
+                  "displayMode": "single",
+                  "locale": "en",
+                  "colorTheme": "dark"
+                }
+                </script>
             </div>
-        </div>
-        <div class="result">
-            <div class="live"><div class="dot"></div> LIVE DATA</div>
-            <div class="val" id="res">0.00</div>
-            <div class="info" id="rate">Initializing...</div>
         </div>
     </div>
 </div>
 
-<footer>&copy; 2026 SmartCalc Digital</footer>
+<footer>
+    &copy; 2026 SmartCalc Global. Powered by TradingView Technology.
+</footer>
 
-<script>
-    const amt = document.getElementById('amt');
-    const from = document.getElementById('from');
-    const to = document.getElementById('to');
-    const res = document.getElementById('res');
-    const rate = document.getElementById('rate');
-    const swp = document.getElementById('swp');
-
-    async function calc() {
-        const f = from.value;
-        const t = to.value;
-        const a = parseFloat(amt.value) || 0;
-
-        if(a <= 0) { res.innerText = "0.00"; rate.innerText = "Enter amount"; return; }
-
-        try {
-            // Используем публичное API CoinGecko (наиболее надежное для браузеров)
-            const url = `https://api.coingecko.com`;
-            const response = await fetch(url);
-            const data = await response.json();
-
-            // База цен в USD
-            const prices = {
-                bitcoin: data.bitcoin.usd,
-                ethereum: data.ethereum.usd,
-                solana: data.solana.usd,
-                tether: data.tether.usd,
-                usd: 1
-            };
-
-            const priceFrom = prices[f];
-            const priceTo = prices[t];
-            const finalRate = priceFrom / priceTo;
-            const total = a * finalRate;
-
-            const sF = from.options[from.selectedIndex].text;
-            const sT = to.options[to.selectedIndex].text;
-
-            res.innerText = total > 1 ? total.toLocaleString('en-US', {maximumFractionDigits: 2}) : total.toFixed(8);
-            rate.innerText = `1 ${sF} = ${finalRate.toLocaleString('en-US', {maximumFractionDigits: 8})} ${sT}`;
-
-        } catch (e) {
-            res.innerText = "Updating...";
-            rate.innerText = "Connecting to market...";
-            console.log("Retrying...");
-            setTimeout(calc, 2000); // Авто-повтор при ошибке сети
-        }
-    }
-
-    [amt, from, to].forEach(e => e.addEventListener('input', calc));
-    swp.onclick = () => { [from.value, to.value] = [to.value, from.value]; calc(); };
-    
-    calc();
-</script>
 </body>
 </html>
