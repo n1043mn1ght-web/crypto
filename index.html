@@ -5,198 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartCalc — Crypto Asset Calculator & Live Market Rates</title>
     <meta name="description" content="Professional cryptocurrency calculator by SmartCalc. High-precision live rates for BTC, ETH, SOL and more. Institutional grade data accuracy.">
-    
-    <!-- Premium Fonts -->
     <link href="https://fonts.googleapis.com" rel="stylesheet">
-    
     <style>
-        :root {
-            --brand: #4f46e5;
-            --brand-light: #6366f1;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --success: #10b981;
-            --radius: 20px;
-        }
-
+        :root { --brand: #4f46e5; --bg: #f8fafc; --card: #ffffff; --text-main: #0f172a; --text-muted: #64748b; --border: #e2e8f0; --success: #10b981; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Nav Branding */
-        header {
-            background: var(--card);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-        }
-
-        .logo {
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: var(--brand);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-left: 20px;
-            transition: color 0.2s;
-        }
-        nav a:hover { color: var(--brand); }
-
-        /* Main Layout */
-        .container {
-            max-width: 540px;
-            width: 90%;
-            margin: 60px auto;
-            flex-grow: 1;
-        }
-
-        .calc-card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 40px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border);
-        }
-
-        h1 { font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 8px; letter-spacing: -0.02em; }
-        .subtitle { text-align: center; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 35px; }
-
-        .input-group {
-            background: #f1f5f9;
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 12px;
-            border: 1px solid transparent;
-            transition: 0.3s;
-        }
-        .input-group:focus-within { border-color: var(--brand-light); background: #fff; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.05); }
-
-        label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
-        
-        .field-row { display: flex; align-items: center; gap: 15px; }
-        input { flex: 1; background: transparent; border: none; font-size: 1.6rem; font-weight: 700; outline: none; color: var(--text-main); width: 100%; }
-        select { background: #fff; border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-weight: 600; font-family: inherit; cursor: pointer; font-size: 0.9rem; }
-
-        .swap-area { display: flex; justify-content: center; margin: -20px 0 0px; position: relative; z-index: 5; }
-        .swap-btn {
-            background: var(--brand);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 4px solid var(--card);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: 0.3s;
-        }
-        .swap-btn:hover { transform: rotate(180deg) scale(1.1); background: var(--brand-light); }
-
-        .result-section {
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .live-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--success); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: var(--card); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .logo { font-weight: 800; font-size: 1.4rem; color: var(--brand); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        nav a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; margin-left: 20px; }
+        .container { max-width: 500px; width: 90%; margin: 60px auto; flex-grow: 1; }
+        .calc-card { background: var(--card); border-radius: 24px; padding: 40px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05); border: 1px solid var(--border); }
+        h1 { font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 30px; letter-spacing: -0.02em; }
+        .input-group { background: #f1f5f9; padding: 20px; border-radius: 16px; margin-bottom: 10px; }
+        label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+        .field-row { display: flex; align-items: center; gap: 12px; }
+        input { flex: 1; background: transparent; border: none; font-size: 1.5rem; font-weight: 700; outline: none; width: 100%; }
+        select { background: #fff; border: 1px solid var(--border); padding: 8px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .swap-area { display: flex; justify-content: center; margin: -20px 0; position: relative; z-index: 5; }
+        .swap-btn { background: var(--brand); color: white; width: 36px; height: 36px; border-radius: 50%; border: 3px solid var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .swap-btn:hover { transform: rotate(180deg); }
+        .result-section { margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
+        .live-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--success); font-size: 0.7rem; font-weight: 800; margin-bottom: 10px; }
         .dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulse 1.5s infinite; }
-
-        .res-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 500; }
-        .res-value { font-size: 2.8rem; font-weight: 800; color: var(--brand); word-break: break-all; line-height: 1; }
-        .rate-info { margin-top: 15px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.8rem; }
+        .res-value { font-size: 2.5rem; font-weight: 800; color: var(--brand); word-break: break-all; }
+        .rate-info { margin-top: 10px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        footer { text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
 <header>
-    <a href="#" class="logo">
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org"><rect width="32" height="32" rx="8" fill="#4f46e5"/><path d="M10 16H22M16 10V22" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
-        SmartCalc
-    </a>
+    <a href="#" class="logo">SmartCalc</a>
     <nav>
         <a href="https://n1043mn1ght-web.github.io">Tools</a>
         <a href="https://n1043mn1ght-web.github.io">Mortgage</a>
-        <a href="https://n1043mn1ght-web.github.io">Invest</a>
     </nav>
 </header>
 
 <div class="container">
     <main class="calc-card">
         <h1>Crypto Calculator</h1>
-        <p class="subtitle">Live Asset Evaluation Tool</p>
-
         <div class="input-group">
-            <label>Amount to calculate</label>
+            <label>Amount</label>
             <div class="field-row">
-                <input type="number" id="amount" value="1" step="any" placeholder="0.00">
+                <input type="number" id="amount" value="1" step="any">
                 <select id="fromCurrency">
-                    <option value="BTC">BTC</option>
-                    <option value="ETH">ETH</option>
-                    <option value="SOL">SOL</option>
-                    <option value="BNB">BNB</option>
-                    <option value="USDT">USDT</option>
+                    <option value="bitcoin">BTC</option>
+                    <option value="ethereum">ETH</option>
+                    <option value="solana">SOL</option>
+                    <option value="tether">USDT</option>
+                    <option value="usd">USD</option>
                 </select>
             </div>
         </div>
-
-        <div class="swap-area">
-            <button class="swap-btn" id="swapBtn">⇅</button>
-        </div>
-
-        <div class="input-group" style="margin-top: -15px;">
-            <label>Compare with</label>
+        <div class="swap-area"><button class="swap-btn" id="swapBtn">⇅</button></div>
+        <div class="input-group">
+            <label>Convert to</label>
             <div class="field-row">
-                <input type="text" value="Market Price" readonly style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">
+                <input type="text" value="Market Rate" readonly style="font-size: 0.9rem; color: var(--text-muted);">
                 <select id="toCurrency">
-                    <option value="USDT">USDT</option>
-                    <option value="BTC">BTC</option>
-                    <option value="ETH">ETH</option>
-                    <option value="EUR">EUR</option>
+                    <option value="usd" selected>USD</option>
+                    <option value="bitcoin">BTC</option>
+                    <option value="ethereum">ETH</option>
+                    <option value="tether">USDT</option>
                 </select>
             </div>
         </div>
-
         <div class="result-section">
-            <div class="live-tag"><div class="dot"></div> Real-time Market Data</div>
-            <div class="res-label">Estimated Value</div>
+            <div class="live-tag"><div class="dot"></div> LIVE DATA</div>
             <div class="res-value" id="result">0.00</div>
-            <div class="rate-info" id="unitRate">1 BTC = ...</div>
+            <div class="rate-info" id="unitRate">Loading prices...</div>
         </div>
     </main>
 </div>
 
-<footer>
-    &copy; 2026 SmartCalc Global Analytics. <br> Powered by Binance Cloud API. No registration required.
-</footer>
+<footer>&copy; 2026 SmartCalc Analytics</footer>
 
 <script>
     const amountEl = document.getElementById('amount');
@@ -206,68 +90,58 @@
     const unitRateEl = document.getElementById('unitRate');
     const swapBtn = document.getElementById('swapBtn');
 
-    // Профессиональный расчет через Binance API (без ключей, работает везде)
+    // Кэш для фиатных курсов (USD к EUR обычно статичен в крипто-мире как 1)
+    const fiatRates = { usd: 1, eur: 0.92, usdt: 1 };
+
     async function calculate() {
         const from = fromEl.value;
         const to = toEl.value;
-        const amount = parseFloat(amountEl.value);
+        const amount = parseFloat(amountEl.value) || 0;
 
-        if (!amount || amount <= 0) {
+        if (amount <= 0) {
             resultEl.innerText = "0.00";
-            unitRateEl.innerText = "Waiting for input...";
+            unitRateEl.innerText = "Enter valid amount";
             return;
         }
 
-        resultEl.style.opacity = "0.5";
-
         try {
-            let price = 0;
+            // 1. Получаем данные всех активов одним запросом (высокая скорость)
+            const response = await fetch('https://api.coincap.io');
+            const { data } = await response.json();
+            
+            // Превращаем массив в удобный объект цен в USD
+            const prices = {};
+            data.forEach(coin => { prices[coin.id] = parseFloat(coin.priceUsd); });
+            prices['usd'] = 1;
+            prices['usdt'] = prices['tether'] || 1;
 
-            // Если одна из валют - USDT (самый простой случай на Binance)
-            if (from !== 'USDT' && to === 'USDT') {
-                const res = await fetch(`https://api.binance.com{from}USDT`);
-                const data = await res.json();
-                price = parseFloat(data.price);
-            } 
-            else if (from === 'USDT' && to !== 'USDT') {
-                const res = await fetch(`https://api.binance.com{to}USDT`);
-                const data = await res.json();
-                price = 1 / parseFloat(data.price);
-            }
-            else if (from === 'USDT' && to === 'USDT') {
-                price = 1;
-            }
-            // Кросс-курс через USDT (например BTC -> ETH)
-            else {
-                const resFrom = await fetch(`https://api.binance.com{from}USDT`);
-                const resTo = await fetch(`https://api.binance.com{to}USDT`);
-                const dataFrom = await resFrom.json();
-                const dataTo = await resTo.json();
-                price = parseFloat(dataFrom.price) / parseFloat(dataTo.price);
-            }
+            // 2. Логика конвертации (через базовый USD)
+            const fromPriceInUsd = prices[from];
+            const toPriceInUsd = prices[to];
 
-            if (!price || isNaN(price)) throw new Error("Invalid");
+            if (!fromPriceInUsd || !toPriceInUsd) throw new Error("Price not found");
 
-            const total = amount * price;
+            const finalPrice = fromPriceInUsd / toPriceInUsd;
+            const total = amount * finalPrice;
 
-            // Форматирование: большие числа - 2 знака, маленькие (сатоши) - до 8 знаков
+            // 3. Отображение
+            const fromSymbol = fromEl.options[fromEl.selectedIndex].text;
+            const toSymbol = toEl.options[toEl.selectedIndex].text;
+
             resultEl.innerText = total > 1 
                 ? total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                 : total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 });
 
-            unitRateEl.innerText = `1 ${from} = ${price.toLocaleString('en-US', {maximumFractionDigits: 8})} ${to}`;
+            unitRateEl.innerText = `1 ${fromSymbol} = ${finalPrice.toLocaleString('en-US', {maximumFractionDigits: 8})} ${toSymbol}`;
 
         } catch (e) {
             console.error(e);
-            resultEl.innerText = "Error";
-            unitRateEl.innerText = "Pair not available";
-        } finally {
-            resultEl.style.opacity = "1";
+            resultEl.innerText = "Offline";
+            unitRateEl.innerText = "Check your connection";
         }
     }
 
     [amountEl, fromEl, toEl].forEach(el => el.addEventListener('input', calculate));
-
     swapBtn.addEventListener('click', () => {
         const temp = fromEl.value;
         fromEl.value = toEl.value;
@@ -275,9 +149,7 @@
         calculate();
     });
 
-    // Стартовый вызов
-    calculate();
+    calculate(); // Инициализация
 </script>
-
 </body>
 </html>
