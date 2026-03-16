@@ -1,174 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartCalc — Cryptocurrency Calculator & Live Exchange Rates</title>
-    <meta name="description" content="Professional cryptocurrency calculator. Compare BTC, ETH, and altcoins rates instantly. High-precision calculation based on real-time market data.">
-    <link href="https://fonts.googleapis.com" rel="stylesheet">
-    <style>
-        :root {
-            --brand: #4f46e5;
-            --bg: #fdfeff;
-            --card: #ffffff;
-            --text-main: #111827;
-            --text-secondary: #4b5563;
-            --border: #f3f4f6;
-            --accent: #6366f1;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); }
-
-        header {
-            padding: 1.25rem 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border); background: #fff;
-        }
-        .logo { font-weight: 800; font-size: 1.4rem; color: var(--brand); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        nav a { text-decoration: none; color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; margin-left: 20px; transition: 0.2s; }
-        nav a:hover { color: var(--brand); }
-
-        .app-container { max-width: 600px; margin: 80px auto; padding: 0 20px; }
-        .calc-card { background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05); border: 1px solid var(--border); }
-        
-        h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; text-align: center; letter-spacing: -0.5px; }
-        .subtitle { text-align: center; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 35px; }
-
-        .input-box { margin-bottom: 20px; background: #f9fafb; padding: 20px; border-radius: 16px; border: 1px solid var(--border); }
-        .input-box label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 10px; }
-        
-        .input-row { display: flex; align-items: center; gap: 15px; }
-        input { flex: 1; background: transparent; border: none; font-size: 1.5rem; font-weight: 700; outline: none; width: 100%; color: var(--text-main); }
-        select { background: #fff; border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit; }
-
-        .divider { display: flex; align-items: center; justify-content: center; margin: -10px 0 10px; position: relative; z-index: 2; }
-        .swap-circle { background: var(--brand); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; border: 4px solid #fff; }
-        .swap-circle:hover { transform: scale(1.1); background: var(--accent); }
-
-        .output-box { text-align: center; padding: 25px; border-top: 1px solid var(--border); margin-top: 10px; }
-        .output-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 500; }
-        .output-val { font-size: 2.8rem; font-weight: 800; color: var(--brand); word-break: break-all; }
-        
-        .rate-info { margin-top: 15px; font-size: 0.8rem; color: var(--text-secondary); font-weight: 500; }
-        .live-indicator { display: inline-flex; align-items: center; gap: 5px; color: #10b981; font-weight: 700; margin-bottom: 10px; font-size: 0.75rem; }
-        .dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-        footer { text-align: center; padding: 40px; font-size: 0.8rem; color: var(--text-secondary); }
-    </style>
-</head>
-<body>
-
-<header>
-    <a href="#" class="logo">SmartCalc</a>
-    <nav>
-        <a href="https://n1043mn1ght-web.github.io">All Tools</a>
-        <a href="https://n1043mn1ght-web.github.io">Mortgage</a>
-        <a href="https://n1043mn1ght-web.github.io">Investment</a>
-    </nav>
-</header>
-
-<main class="app-container">
-    <div class="calc-card">
-        <h1>Crypto Calculator</h1>
-        <p class="subtitle">Real-time asset evaluation & rates</p>
-
-        <div class="input-box">
-            <label>Amount to evaluate</label>
-            <div class="input-row">
-                <input type="number" id="amount" value="1" step="any" placeholder="0.00">
-                <select id="fromCurrency">
-                    <option value="BTC">BTC</option>
-                    <option value="ETH">ETH</option>
-                    <option value="SOL">SOL</option>
-                    <option value="BNB">BNB</option>
-                    <option value="USD">USD</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="divider">
-            <div class="swap-circle" id="swapBtn">⇅</div>
-        </div>
-
-        <div class="input-box">
-            <label>Compare with</label>
-            <div class="input-row">
-                <input type="text" id="dummyOutput" readonly placeholder="Result below">
-                <select id="toCurrency">
-                    <option value="USD" selected>USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="BTC">BTC</option>
-                    <option value="ETH">ETH</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="output-box">
-            <div class="live-indicator"><div class="dot"></div> LIVE MARKET DATA</div>
-            <div class="output-label">Calculated Value</div>
-            <div class="output-val" id="result">0.00</div>
-            <div class="rate-info" id="unitRate">1 BTC = ...</div>
-        </div>
-    </div>
-</main>
-
-<footer>
-    &copy; 2026 SmartCalc Global Analytics. Data provided by CryptoCompare.
-</footer>
-
-<script>
-    const amountEl = document.getElementById('amount');
-    const fromEl = document.getElementById('fromCurrency');
-    const toEl = document.getElementById('toCurrency');
-    const resultEl = document.getElementById('result');
+    const amountIn = document.getElementById('amount');
+    const fromCr = document.getElementById('fromCurrency');
+    const toCr = document.getElementById('toCurrency');
+    const resDisplay = document.getElementById('result');
     const unitRateEl = document.getElementById('unitRate');
     const swapBtn = document.getElementById('swapBtn');
 
     async function calculate() {
-        const from = fromEl.value;
-        const to = toEl.value;
-        const amount = amountEl.value;
+        const from = fromCr.value;
+        const to = toCr.value;
+        const amount = parseFloat(amountIn.value);
 
         if (!amount || amount <= 0) {
-            resultEl.innerText = "0.00";
-            unitRateEl.innerText = "";
+            resDisplay.innerText = "0.00";
+            unitRateEl.innerText = "Enter amount";
             return;
         }
 
+        // Показываем пользователю, что запрос идет (UX)
+        resDisplay.style.opacity = "0.5";
+        unitRateEl.innerText = "Fetching data...";
+
         try {
-            const response = await fetch(`https://min-api.cryptocompare.com{from}&tsyms=${to}`);
+            // Используем HTTPS и добавляем таймштамп для обхода кэша
+            const url = `https://min-api.cryptocompare.com{from.toUpperCase()}&tsyms=${to.toUpperCase()}&extraParams=smartcalc_app_${Date.now()}`;
+            
+            const response = await fetch(url);
+            
+            if (!response.ok) throw new Error('Network response was not ok');
+            
             const data = await response.json();
 
-            if (data[to]) {
-                const rate = data[to];
+            if (data && data[to.toUpperCase()]) {
+                const rate = data[to.toUpperCase()];
                 const total = amount * rate;
 
-                // Основной результат
-                resultEl.innerText = total > 1 
+                // Форматирование для профи: если число маленькое - 6 знаков, если большое - 2
+                resDisplay.innerText = total > 1 
                     ? total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                     : total.toFixed(6);
 
-                // Инфо о курсе за 1 единицу
                 unitRateEl.innerText = `1 ${from} = ${rate.toLocaleString('en-US')} ${to}`;
+            } else {
+                throw new Error('Invalid Data');
             }
-        } catch (e) {
-            resultEl.innerText = "Error";
+        } catch (err) {
+            console.error("API Error:", err);
+            resDisplay.innerText = "Offline";
+            unitRateEl.innerText = "Service temporarily unavailable";
+        } finally {
+            resDisplay.style.opacity = "1";
         }
     }
 
-    [amountEl, fromEl, toEl].forEach(el => el.addEventListener('input', calculate));
-    
+    // Слушатели с защитой от "дребезга" (debounce)
+    let timeout;
+    [amountIn, fromCr, toCr].forEach(el => {
+        el.addEventListener('input', () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(calculate, 300); // Задержка 300мс, чтобы не спамить API
+        });
+    });
+
     swapBtn.addEventListener('click', () => {
-        const temp = fromEl.value;
-        fromEl.value = toEl.value;
-        toEl.value = temp;
+        const temp = fromCr.value;
+        fromCr.value = toCr.value;
+        toCr.value = temp;
         calculate();
     });
 
+    // Стартовый запуск
     calculate();
-</script>
-
-</body>
-</html>
