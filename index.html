@@ -3,128 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartCalc Crypto — Live Evaluation Tool</title>
+    <title>SmartCalc Crypto — Live Real-Time Calculator</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
-        :root { --brand: #4f46e5; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --muted: #64748b; }
+        :root { --brand: #4f46e5; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
         header { background: #fff; padding: 15px 5%; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 900; color: var(--brand); text-decoration: none; font-size: 1.5rem; letter-spacing: -1px; }
-        .nav a { margin-left: 15px; text-decoration: none; color: var(--muted); font-size: 0.85rem; font-weight: 600; }
+        .logo { font-weight: 900; color: var(--brand); text-decoration: none; font-size: 1.5rem; }
         .container { max-width: 450px; margin: 60px auto; padding: 20px; }
         .card { background: #fff; padding: 35px; border-radius: 28px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; }
-        h1 { text-align: center; margin-bottom: 30px; font-size: 1.8rem; font-weight: 900; }
         .input-group { background: #f1f5f9; padding: 18px; border-radius: 16px; margin-bottom: 10px; }
-        label { display: block; font-size: 0.7rem; font-weight: 800; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+        label { display: block; font-size: 0.7rem; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 8px; }
         .row { display: flex; align-items: center; gap: 10px; }
         input { flex: 1; background: none; border: none; font-size: 1.5rem; font-weight: 800; outline: none; width: 100%; color: var(--text); }
         select { background: #fff; border: 1px solid #cbd5e1; padding: 6px; border-radius: 8px; font-weight: 700; cursor: pointer; }
-        .swap { display: flex; justify-content: center; margin: -25px 0; position: relative; z-index: 5; }
-        .btn { background: var(--brand); color: #fff; border: 4px solid #fff; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; box-shadow: 0 4px 12px rgba(79,70,229,0.2); }
-        .btn:hover { transform: rotate(180deg); background: #4338ca; }
         .result { margin-top: 30px; text-align: center; padding-top: 25px; border-top: 2px dashed #f1f5f9; }
-        .val { font-size: 2.5rem; font-weight: 900; color: var(--brand); margin-bottom: 5px; }
-        .info { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
-        .live { color: #10b981; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 10px; }
-        .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: p 1.5s infinite; }
-        @keyframes p { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        footer { text-align: center; padding: 40px; font-size: 0.8rem; color: var(--muted); }
+        .val { font-size: 2.2rem; font-weight: 900; color: var(--brand); margin-bottom: 5px; }
+        .status { color: #10b981; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <header>
     <a href="#" class="logo">SmartCalc</a>
-    <div class="nav">
-        <a href="https://n1043mn1ght-web.github.io">Tools</a>
-        <a href="https://n1043mn1ght-web.github.io">Mortgage</a>
-    </div>
 </header>
 
 <div class="container">
     <div class="card">
-        <h1>Evaluation</h1>
+        <h1 style="text-align:center; margin-bottom:20px;">Crypto Calc</h1>
+        
         <div class="input-group">
-            <label>You Hold</label>
+            <label id="inputLabel">You Pay (USD)</label>
             <div class="row">
-                <input type="number" id="amt" value="1" step="any">
-                <select id="from">
-                    <option value="BTC">BTC</option>
-                    <option value="ETH">ETH</option>
-                    <option value="SOL">SOL</option>
-                    <option value="BNB">BNB</option>
+                <input type="number" id="amount" value="1000" step="any">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Select Asset</label>
+            <div class="row">
+                <select id="asset" style="width: 100%;">
+                    <option value="btcusdt">Bitcoin (BTC)</option>
+                    <option value="ethusdt">Ethereum (ETH)</option>
+                    <option value="solusdt">Solana (SOL)</option>
+                    <option value="bnbusdt">BNB</option>
                 </select>
             </div>
         </div>
-        <div class="swap"><button class="btn" id="swp">⇅</button></div>
-        <div class="input-group" style="margin-top:-15px;">
-            <label>Compare with</label>
-            <div class="row">
-                <input type="text" value="Market Price" readonly style="font-size:0.9rem; color:#94a3b8;">
-                <select id="to">
-                    <option value="USDT">USDT</option>
-                    <option value="BTC">BTC</option>
-                    <option value="ETH">ETH</option>
-                </select>
-            </div>
-        </div>
+
         <div class="result">
-            <div class="live"><div class="dot"></div> LIVE MARKET DATA</div>
-            <div id="res" class="val">0.00</div>
-            <div id="rate" class="info">Fetching prices...</div>
+            <div class="status"><div class="dot"></div> LIVE STREAM CONNECTED</div>
+            <div style="font-size: 0.9rem; color: #64748b; margin-bottom: 10px;">You will receive approximately:</div>
+            <div id="resValue" class="val">0.00000000</div>
+            <div id="unitPrice" style="font-size: 0.8rem; color: #94a3b8; margin-top: 10px;">Price: Loading...</div>
         </div>
     </div>
 </div>
 
-<footer>&copy; 2026 SmartCalc Digital Ecosystem</footer>
-
 <script>
-    const amt = document.getElementById('amt');
-    const from = document.getElementById('from');
-    const to = document.getElementById('to');
-    const res = document.getElementById('res');
-    const rate = document.getElementById('rate');
-    const swp = document.getElementById('swp');
+    const amountInput = document.getElementById('amount');
+    const assetSelect = document.getElementById('asset');
+    const resValue = document.getElementById('resValue');
+    const unitPrice = document.getElementById('unitPrice');
 
-    async function calc() {
-        const f = from.value;
-        const t = to.value;
-        const a = parseFloat(amt.value) || 0;
+    let currentPrice = 0;
+    let ws;
 
-        if (a <= 0) { res.innerText = "0.00"; rate.innerText = "Enter amount"; return; }
+    function connectWS() {
+        if (ws) ws.close();
+        
+        const symbol = assetSelect.value;
+        // Binance Stream напрямую без HTTP запросов
+        ws = new WebSocket(`wss://://stream.binance.com{symbol}@ticker`);
 
-        try {
-            let price = 0;
-            // Прямой запрос к Binance API (самый стабильный для GitHub)
-            if (f !== 'USDT' && t === 'USDT') {
-                const r = await fetch(`https://api.binance.com{f}USDT`);
-                const d = await r.json();
-                price = parseFloat(d.price);
-            } else if (f === 'USDT' && t !== 'USDT') {
-                const r = await fetch(`https://api.binance.com{t}USDT`);
-                const d = await r.json();
-                price = 1 / parseFloat(d.price);
-            } else if (f !== 'USDT' && t !== 'USDT') {
-                const r1 = await fetch(`https://api.binance.com{f}USDT`);
-                const r2 = await fetch(`https://api.binance.com{t}USDT`);
-                const d1 = await r1.json();
-                const d2 = await r2.json();
-                price = parseFloat(d1.price) / parseFloat(d2.price);
-            } else { price = 1; }
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            currentPrice = parseFloat(data.c); // Текущая цена закрытия
+            updateCalculation();
+        };
 
-            const total = a * price;
-            res.innerText = total > 1 ? total.toLocaleString('en-US', {maximumFractionDigits: 2}) : total.toFixed(8);
-            rate.innerText = `1 ${f} = ${price.toLocaleString('en-US', {maximumFractionDigits: 8})} ${t}`;
-        } catch (e) {
-            res.innerText = "Check Connection";
-            rate.innerText = "API temporarily busy";
+        ws.onerror = () => {
+            unitPrice.innerText = "Connection Error. Retrying...";
+        };
+    }
+
+    function updateCalculation() {
+        const amt = parseFloat(amountInput.value) || 0;
+        if (currentPrice > 0 && amt > 0) {
+            const result = amt / currentPrice;
+            resValue.innerText = result.toFixed(8);
+            unitPrice.innerText = `1 ${assetSelect.value.replace('usdt','').toUpperCase()} = $${currentPrice.toLocaleString()}`;
         }
     }
 
-    [amt, from, to].forEach(e => e.addEventListener('input', calc));
-    swp.onclick = () => { [from.value, to.value] = [to.value, from.value]; calc(); };
-    calc();
+    amountInput.addEventListener('input', updateCalculation);
+    assetSelect.addEventListener('change', connectWS);
+
+    // Стартуем
+    connectWS();
 </script>
+
 </body>
 </html>
